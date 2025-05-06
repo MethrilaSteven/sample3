@@ -1,0 +1,57 @@
+name: Build All Flavors APK
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Grant permission to gradlew
+        run: chmod +x gradlew
+
+      # --- Build each flavor ---
+      - name: Build dttStaging Release APK
+        run: ./gradlew assembleDttStagingRelease
+
+      - name: Build nitaStaging Release APK
+        run: ./gradlew assembleNitaStagingRelease
+
+      - name: Build production Release APK
+        run: ./gradlew assembleProductionRelease
+
+      # --- Upload artifacts ---
+      - name: Upload dttStaging APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: dttStaging-apk
+          path: app/build/outputs/apk/dttStaging/release/*.apk
+
+      - name: Upload nitaStaging APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: nitaStaging-apk
+          path: app/build/outputs/apk/nitaStaging/release/*.apk
+
+      - name: Upload production APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-apk
+          path: app/build/outputs/apk/production/release/*.apk
