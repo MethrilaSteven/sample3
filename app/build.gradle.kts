@@ -1,3 +1,4 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -11,8 +12,9 @@ android {
         applicationId = "com.sample.sample3"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        // Dynamically set versionCode and versionName
+        versionCode = getVersionCode()  // Dynamic versionCode based on commit count
+        versionName = getVersionName()  // Dynamic versionName based on commit hash and date
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,6 +28,9 @@ android {
             )
         }
     }
+
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -141,4 +146,39 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+// Function to get the Git commit count from the .git directory
+fun getGitCommitCount(): Int {
+    val gitDir = File("${project.rootDir}/.git")
+    val commitCountFile = File(gitDir, "logs/HEAD")
+    if (commitCountFile.exists()) {
+        val commitCount = commitCountFile.readLines().size
+        return commitCount
+    }
+    return 0 // Return 0 if no commits are found
+}
+
+// Function to get the Git short commit hash
+fun getGitCommitHash(): String {
+    val gitDir = File("${project.rootDir}/.git")
+    val headFile = File(gitDir, "HEAD")
+    if (headFile.exists()) {
+        val head = headFile.readText()
+        val commitHash = head.substringAfter("ref: refs/heads/").trim()
+        val shortCommitHash = commitHash.take(7)  // Shorten to first 7 characters
+        return shortCommitHash
+    }
+    return "unknown"
+}
+
+// Function to generate a dynamic versionCode based on commit count
+fun getVersionCode(): Int {
+    return getGitCommitCount()  // Use commit count as version code
+}
+
+// Function to generate a dynamic versionName based on commit hash and date
+fun getVersionName(): String {
+    val commitCount = getGitCommitCount()  // Get commit count
+    return "v1.0.${commitCount}"  // Format as v1.0.x (e.g., v1.0.25)
 }
