@@ -23,6 +23,14 @@
             android:textSize="25sp"
             />
 
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:hint="Enter your Name here: "
+            android:layout_margin="15dp"
+
+            />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
