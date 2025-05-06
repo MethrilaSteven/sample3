@@ -34,6 +34,10 @@ android {
         jvmTarget = "11"
     }
 
+    buildFeatures {
+        buildConfig=true  // Enable BuildConfig feature
+    }
+
     flavorDimensions += "verify"
 
     productFlavors {
