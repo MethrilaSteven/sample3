@@ -2,9 +2,9 @@ name: Build All Flavors APK
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "dttstaging" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "dttstaging" ]
 
 jobs:
   build:
