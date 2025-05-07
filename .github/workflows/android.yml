@@ -2,13 +2,9 @@ name: Build All Flavors APK
 
 on:
   push:
-    branches:
-      - "main"
-      - "nitaStaging" # Trigger on pushes to the nitaStaging branch
-    pull_request:
-      branches:
-        - "main"
-        - "nitaStaging"
+    branches: [ "main", "nitastaging" ]
+  pull_request:
+    branches: [ "main", "nitastaging" ]
 
 jobs:
   build:
