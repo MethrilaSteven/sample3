@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - "main"
-      - "dttStaging"  # Trigger on pushes to the dttStaging branch
+      - "nitaStaging" # Trigger on pushes to the nitaStaging branch
     pull_request:
       branches:
         - "main"
-        - "dttStaging"
+        - "nitaStaging"
 
 jobs:
   build:
@@ -32,30 +32,14 @@ jobs:
         run: chmod +x gradlew
 
       # --- Build each flavor ---
-      - name: Build dttStaging Release APK
-        run: ./gradlew assembleDttStagingRelease
-
       - name: Build nitaStaging Release APK
         run: ./gradlew assembleNitaStagingRelease
 
-      - name: Build production Release APK
-        run: ./gradlew assembleProductionRelease
 
       # --- Upload artifacts ---
-      - name: Upload dttStaging APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: dttStaging-apk
-          path: app/build/outputs/apk/dttStaging/release/*.apk
-
       - name: Upload nitaStaging APK
         uses: actions/upload-artifact@v4
         with:
           name: nitaStaging-apk
           path: app/build/outputs/apk/nitaStaging/release/*.apk
 
-      - name: Upload production APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: production-apk
-          path: app/build/outputs/apk/production/release/*.apk
