@@ -1,4 +1,4 @@
-name: Build All Flavors APK
+name: Build dttstaging APK
 
 on:
   push:
@@ -31,11 +31,6 @@ jobs:
       - name: Build dttStaging Release APK
         run: ./gradlew assembleDttStagingRelease
 
-      - name: Build nitaStaging Release APK
-        run: ./gradlew assembleNitaStagingRelease
-
-      - name: Build production Release APK
-        run: ./gradlew assembleProductionRelease
 
       # --- Upload artifacts ---
       - name: Upload dttStaging APK
@@ -44,14 +39,3 @@ jobs:
           name: dttStaging-apk
           path: app/build/outputs/apk/dttStaging/release/*.apk
 
-      - name: Upload nitaStaging APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: nitaStaging-apk
-          path: app/build/outputs/apk/nitaStaging/release/*.apk
-
-      - name: Upload production APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: production-apk
-          path: app/build/outputs/apk/production/release/*.apk
